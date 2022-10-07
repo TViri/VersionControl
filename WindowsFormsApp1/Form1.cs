@@ -97,7 +97,7 @@ namespace WindowsFormsApp1
                 values[counter, 5] = f.NumberOfRooms;
                 values[counter, 6] = f.FloorArea;
                 values[counter, 7] = f.Price;
-                values[counter, 8] = f.Price / f.FloorArea; //"= képlet kellene ide"
+                values[counter, 8] = "=(H" + (counter + 2).ToString() + "/G" + (counter + 2).ToString() + ") * 1000000";
                 counter++;
             }
 
@@ -116,6 +116,7 @@ namespace WindowsFormsApp1
 
             Excel.Range lastColumn = xlSheet.get_Range(GetCell(1, headers.Length), GetCell(lastRowID, headers.Length));
             lastColumn.Interior.Color = Color.LightGreen;
+            lastColumn.NumberFormat = "0.00";
             //kerekítés két tizedesjegyre
 
             Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
