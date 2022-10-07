@@ -117,7 +117,7 @@ namespace WindowsFormsApp1
             Excel.Range lastColumn = xlSheet.get_Range(GetCell(1, headers.Length), GetCell(lastRowID, headers.Length));
             lastColumn.Interior.Color = Color.LightGreen;
             lastColumn.NumberFormat = "0.00";
-            
+            //kerekítés két tizedesjegyre
 
             Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
             headerRange.Font.Bold = true;
