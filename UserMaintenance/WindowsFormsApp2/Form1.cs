@@ -129,7 +129,6 @@ namespace WindowsFormsApp2
             foreach (XmlElement x in xml.DocumentElement.ChildNodes[0])
             {
                 Currencies.Add(x.InnerText);
-
             }
         }
     }
