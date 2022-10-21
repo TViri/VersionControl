@@ -25,7 +25,8 @@ namespace WindowsFormsApp2
 
             GetExchangeRates();
 
-            
+            RefreshData();
+
         }
 
         private void GetXML(string result)
@@ -86,6 +87,34 @@ namespace WindowsFormsApp2
             chartArea.AxisX.MajorGrid.Enabled = false;
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
+        }
+
+        private void RefreshData()
+        {
+            Rates.Clear();
+
+
+            chartRateData.DataSource = Rates;
+            dataGridView1.DataSource = Rates;
+            GetExchangeRates();
+
+
+            DisplayData();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
