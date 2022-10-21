@@ -17,13 +17,13 @@ namespace WindowsFormsApp2
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
 
-            dataGridView1.DataSource = Rates.ToList();
-
-            GetExchangeRates();
+            GetCurrencies();
+            comboBox1.DataSource = Currencies;
 
             RefreshData();
 
@@ -115,6 +115,22 @@ namespace WindowsFormsApp2
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshData();
+        }
+
+        private void GetCurrencies()
+        {
+            var mnbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody();
+            var MnbGetExResp = mnbService.GetCurrencies(request);
+            var result = MnbGetExResp.GetCurrenciesResult;
+
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(result);
+            foreach (XmlElement x in xml.DocumentElement.ChildNodes[0])
+            {
+                Currencies.Add(x.InnerText);
+
+            }
         }
     }
 }
