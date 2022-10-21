@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.mnbServiceReference;
 using WindowsFormsApp2.Entities;
+using System.Xml;
 
 namespace WindowsFormsApp2
 {
@@ -22,6 +23,31 @@ namespace WindowsFormsApp2
             dataGridView1.DataSource = Rates.ToList();
 
             GetExchangeRates();
+
+            
+        }
+
+        private void GetXML(string result)
+        {
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                
+                var rate = new RateData();
+                Rates.Add(rate);
+
+                rate.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+                rate.Currency = childElement.GetAttribute("curr");
+
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                var value = decimal.Parse(childElement.InnerText);
+                if (unit != 0)
+                    rate.Value = value / unit;
+            }
         }
 
         private void GetExchangeRates()
@@ -38,6 +64,8 @@ namespace WindowsFormsApp2
             var response = mnbService.GetExchangeRates(request);
 
             var result = response.GetExchangeRatesResult;
+
+            GetXML(result);
         }
     }
 }
