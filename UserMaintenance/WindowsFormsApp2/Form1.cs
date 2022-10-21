@@ -98,7 +98,6 @@ namespace WindowsFormsApp2
             dataGridView1.DataSource = Rates;
             GetExchangeRates();
 
-
             DisplayData();
         }
 
