@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using WindowsFormsApp2.mnbServiceReference;
 using WindowsFormsApp2.Entities;
 using System.Xml;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApp2
 {
@@ -66,6 +67,25 @@ namespace WindowsFormsApp2
             var result = response.GetExchangeRatesResult;
 
             GetXML(result);
+        }
+
+        private void DisplayData()
+        {
+            chartRateData.DataSource = Rates;
+
+            var series = chartRateData.Series[0];
+            series.ChartType = SeriesChartType.Line;
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+            series.BorderWidth = 2;
+
+            var legend = chartRateData.Legends[0];
+            legend.Enabled = false;
+
+            var chartArea = chartRateData.ChartAreas[0];
+            chartArea.AxisX.MajorGrid.Enabled = false;
+            chartArea.AxisY.MajorGrid.Enabled = false;
+            chartArea.AxisY.IsStartedFromZero = false;
         }
     }
 }
