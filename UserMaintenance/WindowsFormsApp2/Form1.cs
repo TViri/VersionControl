@@ -8,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.mnbServiceReference;
+using WindowsFormsApp2.Entities;
 
 namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
+        BindingList<RateData> Rates = new BindingList<RateData>();
         public Form1()
         {
             InitializeComponent();
+
+            dataGridView1.DataSource = Rates.ToList();
 
             GetExchangeRates();
         }
