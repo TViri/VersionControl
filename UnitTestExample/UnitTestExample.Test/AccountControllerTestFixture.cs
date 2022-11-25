@@ -19,8 +19,6 @@ namespace UnitTestExample.Test
         ]
         public void TestValidateEmail(string email, bool expectedResult)
         {
-            //3A megközelítés
-
             // Arrange
             var accountController = new AccountController();
 
@@ -37,11 +35,18 @@ namespace UnitTestExample.Test
             TestCase("ABCD1234", false),
             TestCase("abcd1234", false),
             TestCase("Abc123", false),
-            TestCase("Abcd1234", false)
+            TestCase("Abcd1234", true)
         ]  
         public void TestValidatePassword(string password, bool expectedResult)
         {
-            
+            // Arrange
+            var accountController = new AccountController();
+
+            // Act
+            var actualResult = accountController.ValidatePassword(password);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
 
         }
     }
