@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace WindowsFormsApp9
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
+        List<int> Males = new List<int>();
+        List<int> Females = new List<int>();
 
         Random rng = new Random(111);
         public Form1()
@@ -36,7 +39,16 @@ namespace WindowsFormsApp9
             {
                 for (int i = 0; i < Population.Count; i++)
                 {
-                    // Ide jön a szimulációs lépés
+                    SimStep(year, Population[i]);
+
+                    if (Population[i].Gender == Gender.Male)
+                    {
+                        Males.Add(year);
+                    }
+                    else
+                    {
+                        Females.Add(year);
+                    }
                 }
 
                 int nbrOfMales = (from x in Population
@@ -45,9 +57,31 @@ namespace WindowsFormsApp9
                 int nbrOfFemales = (from x in Population
                                     where x.Gender == Gender.Female && x.IsAlive
                                     select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                /*Console.WriteLine(
+                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));*/
             }
+
+            DisplayResult(Males, Females);
+        }
+
+        private void DisplayResult(List<int> males, List<int> females)
+        {
+            string text = "";
+
+            for (int i = 2005; i <= numericUpDown1.Value; i++)
+            {
+                int NbrOfMales = (from x in males
+                                  where x == i
+                                  select x).Count();
+
+                int NbrOfFemales = (from x in females
+                                    where x == i
+                                    select x).Count();
+
+                text = text + "Szimulációs év: " + i + "\n\tFiúk: " + NbrOfMales + "\n\tLányok:" + NbrOfFemales + "\n\n";
+            }
+
+            richTextBox1.Text = text;
         }
 
         public List<Person> GetPopulation(string csvpath)
@@ -152,6 +186,17 @@ namespace WindowsFormsApp9
         private void button1_Click(object sender, EventArgs e)
         {
             Simulation();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Application.StartupPath;
+            ofd.Filter = "Comma Seperated Values (*.csv)|*.csv";
+            ofd.DefaultExt = "csv";
+            ofd.AddExtension = true;
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+            textBox1.Text = ofd.FileName;
         }
     }
 }
